@@ -1,2 +1,2 @@
 # Propositional-Logic-Game
-Game with randomized propositional formulas using rand() which follows precedence and associativity.
+A 2-player game with fixed size randomized propositional formulas which follows precedence and associativity.
