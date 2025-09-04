@@ -3,16 +3,6 @@
 #include <time.h>
 
 
-/* Logical connectives and their c counterpart
-
-   ¬   = !
-   ^   = &&
-   v   = ||
-   ->  = (!x || y)
-   <-> = x && y || !(x || y)
-*/
-
-
 // ConnectiveType helper functions
 _Bool IsConnectiveAssociativityL2R(ConnectiveType cType) {
 	switch (cType) {
@@ -46,19 +36,17 @@ const char* GetConnectiveString(ConnectiveType cType) {
 }
 
 
-// LogicalPredicate helper functions (TODO: Implement negation)
-void PredicatePrint(LogicalPredicate* predicate) {
-	printf("(");
+/* 
+	Logical connectives and their c counterpart
 
-	if (predicate->LPredicate->Type < Conjuntion) printf("%s%c", GetConnectiveString(predicate->LPredicate->Type), predicate->LPredicate->VariableChar); else PredicatePrint(predicate->LPredicate);
+    ¬   = !
+    ^   = &&
+    v   = ||
+    ->  = (!x || y)
+    <-> = x && y || !(x || y)
+*/
 
-	printf(GetConnectiveString(predicate->Type));
-
-	if (predicate->RPredicate->Type < Conjuntion) printf("%s%c", GetConnectiveString(predicate->RPredicate->Type), predicate->RPredicate->VariableChar); else PredicatePrint(predicate->RPredicate);
-
-	printf(")");
-}
-
+// LogicalPredicate helper functions
 _Bool PredicateConjunction(LogicalPredicate* predicate) {
 	_Bool leftOperand = predicate->LPredicate->Type == Variable ? *predicate->LPredicate->Variable : (predicate->LPredicate->Type == Negation ? !*predicate->LPredicate->Variable : predicate->LPredicate->Predicate(predicate->LPredicate));
 	_Bool rightOperand = predicate->RPredicate->Type == Variable ? *predicate->RPredicate->Variable : (predicate->RPredicate->Type == Negation ? !*predicate->RPredicate->Variable : predicate->RPredicate->Predicate(predicate->RPredicate));
@@ -87,8 +75,23 @@ _Bool PredicateEquivalence(LogicalPredicate* predicate) {
 	return leftOperand && rightOperand || !(leftOperand || rightOperand);
 }
 
+void PredicatePrint(LogicalPredicate* predicate) {
+	printf("(");
 
-// LogicalPredicate helper functions
+	if (predicate->LPredicate->Type < Conjuntion) printf("%s%c", GetConnectiveString(predicate->LPredicate->Type), predicate->LPredicate->VariableChar); else PredicatePrint(predicate->LPredicate);
+
+	printf(GetConnectiveString(predicate->Type));
+
+	if (predicate->RPredicate->Type < Conjuntion) printf("%s%c", GetConnectiveString(predicate->RPredicate->Type), predicate->RPredicate->VariableChar); else PredicatePrint(predicate->RPredicate);
+
+	printf(")");
+}
+
+const char* GetBooleanChar(_Bool boolean) {
+	return boolean ? "T" : "F";
+}
+
+
 LogicalPredicate* GenerateVariablePredicates(int countVariables, _Bool* variables, char* variableChars) {
 	LogicalPredicate* variablePredicates = (LogicalPredicate*)malloc(countVariables * sizeof(LogicalPredicate));
 
@@ -107,10 +110,6 @@ LogicalPredicate* GenerateVariablePredicates(int countVariables, _Bool* variable
 	}
 
 	return variablePredicates;
-}
-
-const char* GetBooleanChar(_Bool boolean) {
-	return boolean ? "T" : "F";
 }
 
 

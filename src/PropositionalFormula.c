@@ -25,7 +25,7 @@ PropositionalFormula CreatePropositionalFormula(int countPredicates) {
 
 
 PropositionalFormula GeneratePropositionalFormula(int countVariables, LogicalPredicate* variablePredicates) { 
-	int countPredicates = countVariables - 1;  // Note: The count of variables will always need to be >= 1 
+	int countPredicates = countVariables - 1;  // Note: We assume that the count of variables is >= 2
 	int countFormulaSymbols = 2 * countVariables - 1;
 	int* propositionalFormulaSymbols = (int*)malloc(countFormulaSymbols * sizeof(int));
 	PropositionalFormula propositionalFormula = CreatePropositionalFormula(countPredicates);

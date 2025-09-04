@@ -7,7 +7,7 @@
 
 
 /// <summary>
-/// Stores the predicates contained within a propositional formula and reveals the topmost root predicate.
+/// Stores the predicates contained within a propositional formula and provides the topmost root predicate.
 /// </summary>
 typedef struct PropositionalFormula {
 	LogicalPredicate* Predicates;

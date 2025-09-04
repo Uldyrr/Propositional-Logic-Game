@@ -40,16 +40,14 @@ struct LogicalPredicate {
 
 
 // LogicalPredicate helper functions
-void PredicatePrint(LogicalPredicate* predicate);
 _Bool PredicateConjunction(LogicalPredicate* predicate);
 _Bool PredicateDisjunction(LogicalPredicate* predicate);
 _Bool PredicateImplication(LogicalPredicate* predicate);
 _Bool PredicateEquivalence(LogicalPredicate* predicate);
-
-
-// LogicalPredicate helper functions
-LogicalPredicate* GenerateVariablePredicates(int countVariables, _Bool* variables, char* variableChars);
+void PredicatePrint(LogicalPredicate* predicate);
 const char* GetBooleanChar(_Bool boolean);
+
+LogicalPredicate* GenerateVariablePredicates(int countVariables, _Bool* variables, char* variableChars);
 
 
 // LogicalPredicate global functions
