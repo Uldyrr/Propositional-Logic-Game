@@ -11,7 +11,7 @@
 
 	- Enter as many boolean values as you'd like in "PropositionalVariables" (they are always reset to false before a new game).
 
-	- The program will associate the same index value used in "PropositionalVariables" with the values 
+	- The program will associate any propositional variable at a given index in "PropositionalVariables" with the values 
 	stored at the same index in "PropositionalVariablesChars" and "PropositionalVariablesLocked". 
 	Give the i-th propositional variable a char value at the i-th index of "PropositionalVariablesChars"
 
@@ -144,4 +144,5 @@ int main() {
 	}
 
 	return 0;
+
 }
