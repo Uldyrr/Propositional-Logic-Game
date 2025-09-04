@@ -1,5 +1,5 @@
 # Propositional-Logic-Game
-A 2-player game with fixed size randomized propositional formulas which follows precedence and associativity.
+A 2-player game with fixed size randomized propositional formulas which follow the rules of precedence and associativity.
 
 Player 1 always starts first and has the end goal of making the propositional formula evaluate to true (T).<br/>
 Player 2 starts second and has the end goal of making the evaluation become false (F).
