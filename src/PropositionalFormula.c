@@ -16,7 +16,7 @@ void PropositionalFormulaPrintEvaluation(PropositionalFormula* propositionalForm
 
 // PropositionalFormula global functions
 PropositionalFormula CreatePropositionalFormula(int countPredicates) {
-	PropositionalFormula propositionalFormula = (PropositionalFormula){ .CountPredicates = countPredicates };
+	PropositionalFormula propositionalFormula = (PropositionalFormula){ .CountPredicates = countPredicates, };
 
 	propositionalFormula.Predicates = (LogicalPredicate*)malloc(countPredicates * sizeof(LogicalPredicate));
 
@@ -49,9 +49,19 @@ PropositionalFormula GeneratePropositionalFormula(int countVariables, LogicalPre
 		printf("%i ", propositionalFormulaSymbols[i]);
 	}
 
+	// 3. Cache count of unique variables
+	for (int variableId = 0; variableId < countVariables; variableId++) {
+		for (int i = 0; i < countFormulaSymbols; i++) {
+			if (propositionalFormulaSymbols[i] == variableId) {
+				propositionalFormula.CountVariables++;
+				break;
+			}
+		}
+	}
+
 	printf("\n");
 
-	// 3. Process connectives until a singular root predicate has been made
+	// 4. Process connectives until a singular root predicate has been made
 	_Bool l2r;
 	int iOffset, correctedI, isConnective, lOperandSIndex, rOperandSIndex;
 	int countOfPredicates = 0;

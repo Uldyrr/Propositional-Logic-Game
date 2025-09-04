@@ -4,9 +4,24 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+//#define MACOS  // Define this macro if you need system("clear") instead of system("cls")
 
-char PropositionalVariablesChars[] = { 'Q',   'P',   'R',   'S', 'T', 'A', 'N', 'M'};
-_Bool PropositionalVariables[] =     { false, false, false, false, false, false, false, false };
+/*
+	Before building this program, note this:
+
+	- Enter as many boolean values as you'd like in "PropositionalVariables" (they are always reset to false before a new game).
+
+	- The program will associate the same index value used in "PropositionalVariables" with the values 
+	stored at the same index in "PropositionalVariablesChars" and "PropositionalVariablesLocked". 
+	Give the i-th propositional variable a char value at the i-th index of "PropositionalVariablesChars"
+
+	- You do not need to initialize "PropositionalVariablesLocked" as the program creates it at runtime.
+*/
+
+
+_Bool PropositionalVariables[] = { false, false, false, false, false };
+char PropositionalVariablesChars[] = {'Q', 'P', 'R', 'S', 'T'};
+_Bool* PropositionalVariablesLocked;
 int CountPropositionalVariables = sizeof(PropositionalVariables);
 LogicalPredicate* VariablePredicates;
 PropositionalFormula GamePropositionalFormula;
@@ -16,10 +31,24 @@ _Bool* GetPropositionalVariable(char variable) {
 	variable = toupper(variable);
 
 	for (int i = 0; i < CountPropositionalVariables; i++) {
-		if (PropositionalVariablesChars[i] == variable) return &PropositionalVariables[i];
+		if (PropositionalVariablesChars[i] == variable && PropositionalVariablesLocked[i] == false) {
+			PropositionalVariablesLocked[i] = true;
+
+			return &PropositionalVariables[i];
+		}
 	}
 
 	return NULL;
+}
+
+
+void GetBoolInput(char* msg, _Bool* input) {
+	char inputChar;
+	printf("%s", msg);
+	scanf_s("%c", &inputChar);
+	fseek(stdin, 0, SEEK_END);
+
+	*input = toupper(inputChar) == 'Y';
 }
 
 
@@ -31,9 +60,10 @@ void GetCharInput(char* msg, char* input) {
 
 
 void NewGame() {
-	// 1. Reset propositional variables and generate a new propositional formula
+	// Reset propositional variables and generate a new propositional formula
 	for (int i = 0; i < CountPropositionalVariables; i++) {
 		PropositionalVariables[i] = false;
+		PropositionalVariablesLocked[i] = false;
 	}
 
 	GamePropositionalFormula = GeneratePropositionalFormula(CountPropositionalVariables, VariablePredicates);
@@ -41,13 +71,18 @@ void NewGame() {
 
 
 void GameLoop() {
+	_Bool inputBool;
 	char inputVariable;
 	_Bool* inputPropositionalVariable;
 	int countInput = 0;
 	
 	while (true) {
-		// 2. Renderer current formula and the values of propositional variables
+		// 1. Renderer current formula and the values of propositional variables
+#ifdef MACOS
+		system("clear");
+#else
 		system("cls");
+#endif 
 
 		printf(countInput % 2 == 0 ? "Player 1's turn!" : "Player 2's turn!");
 
@@ -66,17 +101,18 @@ void GameLoop() {
 		}
 
 		for (int i = 0; i < CountPropositionalVariables; i++) {
-			printf("%s %s", GetBooleanChar(PropositionalVariables[i]), i + 1 < CountPropositionalVariables ? "| " : "|");
+			printf("%s %s", PropositionalVariablesLocked[i] ? GetBooleanChar(PropositionalVariables[i]) : " ", i + 1 < CountPropositionalVariables ? "| " : "|");
 		}
 
 		printf("\n\n");
 
-		if (++countInput > CountPropositionalVariables) break;
+		if (++countInput > GamePropositionalFormula.CountVariables) break;
 
-		// 3. Get propositional variable input (If you don't write out the actual character, it is assumed you want one of the variables set to false)
+		// 2. Get propositional variable input
+		GetBoolInput("Set to true? (y/n): ", &inputBool);
 		GetCharInput("Set variable to true: ", &inputVariable);
 
-		if ((inputPropositionalVariable = GetPropositionalVariable(inputVariable)) != NULL) *inputPropositionalVariable = true;
+		if ((inputPropositionalVariable = GetPropositionalVariable(inputVariable)) != NULL) *inputPropositionalVariable = inputBool;
 	}
 
 	PropositionalFormulaPrint(&GamePropositionalFormula);
@@ -94,6 +130,7 @@ void GameLoop() {
 
 
 void Init() {
+	PropositionalVariablesLocked = (_Bool*)malloc(CountPropositionalVariables * sizeof(_Bool));
 	VariablePredicates = GenerateVariablePredicates(CountPropositionalVariables, PropositionalVariables, PropositionalVariablesChars);
 }
 

@@ -13,6 +13,7 @@ typedef struct PropositionalFormula {
 	LogicalPredicate* Predicates;
 	LogicalPredicate* Root;
 	int CountPredicates;
+	int CountVariables;
 } PropositionalFormula;
 
 
