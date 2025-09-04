@@ -25,7 +25,7 @@ PropositionalFormula CreatePropositionalFormula(int countPredicates) {
 
 
 PropositionalFormula GeneratePropositionalFormula(int countVariables, LogicalPredicate* variablePredicates) { 
-	int countPredicates = countVariables - 1;  // Note: The count of variables will always need to be >= 1 lol
+	int countPredicates = countVariables - 1;  // Note: The count of variables will always need to be >= 1 
 	int countFormulaSymbols = 2 * countVariables - 1;
 	int* propositionalFormulaSymbols = (int*)malloc(countFormulaSymbols * sizeof(int));
 	PropositionalFormula propositionalFormula = CreatePropositionalFormula(countPredicates);
@@ -46,7 +46,7 @@ PropositionalFormula GeneratePropositionalFormula(int countVariables, LogicalPre
 		else
 			propositionalFormulaSymbols[i] = PROPOSITONALFORMULA_GENERATION_CONNECTIVEOFFSET + Conjuntion + rand() % (Equivalence - Conjuntion + 1);
 
-		printf("%i ", propositionalFormulaSymbols[i]);
+		//printf("%i ", propositionalFormulaSymbols[i]);
 	}
 
 	// 3. Cache count of unique variables
@@ -59,7 +59,7 @@ PropositionalFormula GeneratePropositionalFormula(int countVariables, LogicalPre
 		}
 	}
 
-	printf("\n");
+	//printf("\n");
 
 	// 4. Process connectives until a singular root predicate has been made
 	_Bool l2r;
@@ -100,16 +100,18 @@ PropositionalFormula GeneratePropositionalFormula(int countVariables, LogicalPre
 			}
 		}
 
+		/*
 		for (int i = 0; i < countFormulaSymbols; i++) {
 			printf("%i ", propositionalFormulaSymbols[i]);
 		}
 
 		printf("\n");
+		*/
 	}
 
 	propositionalFormula.Root = &propositionalFormula.Predicates[countOfPredicates - 1];
 
-	printf("\n");
+	//printf("\n");
 
 	return propositionalFormula;
 }
